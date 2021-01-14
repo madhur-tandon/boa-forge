@@ -1,41 +1,26 @@
 context:
-  version: 3.4.3
-
+  version: 3.5.1
 package:
   name: libarchive
   version: '{{ version }}'
-
 source:
   url: https://github.com/libarchive/libarchive/archive/v{{ version }}.tar.gz
-  sha256: 19556c1c67aacdff547fd719729630444dbc7161c63eca661a310676a022bb01
+  sha256: 6d92e669e259a55a0119c135873469778f2718acbe605717f9d341487b4d0cba
   patches:
-  - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch
-  - patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch
-  - patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch
-    # This should not be applied in general. It exists so I can build it for
-    # debugging Visual Studio where warnings are errors for some reason.
-    # Hiding warnings is poor practice.
-    # - patches/0005-VC9-compatibility-ignore-some-warnings.patch
-  - patches/0006-VC-openssl-define-inline-as-__inline.patch
-    # These warnings are errors when compiling lz-4 support
-  - patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch
-  - patches/0008-VC9-compatibility-remove-C99.patch
-  - patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch
-
+    - patches/0001-Add-lib-to-CMAKE_FIND_LIBRARY_PREFIXES-for-lzma.patch
+    - patches/0003-VC9-compatibility-test-for-BCryptDeriveKeyPBKDF2.patch
+    - patches/0004-VC9-compatibility-define-BCRYPT_SUCCESS.patch
+    - patches/0006-VC-openssl-define-inline-as-__inline.patch
+    - patches/0007-CMake-VC9-compatibility-ignore-some-warnings.patch
+    - patches/0008-VC9-compatibility-remove-C99.patch
+    - patches/0009-CMake-Force-Multi-threaded-DLL-runtime.patch
 build:
   number: 0
-  # run_exports:
-  #   # https://abi-laboratory.pro/index.php?view=timeline&l=libarchive
-  #   - '{{ pin_subpackage("libarchive", max_pin="x.x") }}'
   skip:
     - win and vc<14
-
 requirements:
   build:
     - '{{ compiler("c") }}'
-      # Does not work in this recips at present
-      # we manually convert C99 to C89 instead.
-      # - c99-to-c89  # [win and vc<14]
     - sel(win and vc<14): msinttypes
     - sel(unix): autoconf
     - sel(unix): automake
@@ -50,7 +35,6 @@ requirements:
     - sel(osx): libiconv
   run:
     - sel(osx): libiconv
-
 features:
   - name: zlib
     default: true
@@ -59,7 +43,6 @@ features:
         - zlib-static
       run:
         - zlib-static
-
   - name: zstd
     default: true
     requirements:
@@ -67,7 +50,6 @@ features:
         - zstd-static
       run:
         - zstd-static
-
   - name: openssl
     default: true
     requirements:
@@ -75,7 +57,6 @@ features:
         - openssl-static
       run:
         - openssl-static
-
   - name: lzo
     default: true
     requirements:
@@ -83,7 +64,6 @@ features:
         - lzo-static
       run:
         - lzo-static
-
   - name: xz
     default: true
     requirements:
@@ -91,7 +71,6 @@ features:
         - xz-static
       run:
         - xz-static
-
   - name: bzip2
     default: true
     requirements:
@@ -99,7 +78,6 @@ features:
         - bzip2-static
       run:
         - bzip2-static
-
   - name: lz4
     default: true
     requirements:
@@ -107,7 +85,6 @@ features:
         - lz4-c-static
       run:
         - lz4-c-static
-
   - name: xml2
     default: true
     requirements:
@@ -115,41 +92,16 @@ features:
         - libxml2-static
       run:
         - libxml2-static
-
   - name: static
     default: false
-
-# test:
-#   files:
-#   - test/hello_world.xar
-#   commands:
-#     # Verify pkg-config file is in place.
-#   - sel(unix): test -f "${PREFIX}/lib/pkgconfig/libarchive.pc"
-
-#     # Verify headers are in place.
-#   - sel(unix): test -f "${PREFIX}/include/archive.h"
-#   - sel(unix): test -f "${PREFIX}/include/archive_entry.h"
-
-#   # Verify libraries are in place.
-#   # - sel(unix): test -f "${PREFIX}/lib/libarchive.a"
-#   # - sel(unix): test -f "${PREFIX}/lib/libarchive${SHLIB_EXT}"
-
-#     # Check for commands
-#   - bsdcat --version
-#   - bsdcpio --version
-#   - bsdtar --version
-#   - bsdtar -tf test/hello_world.xar
-
 about:
   home: http://www.libarchive.org/
   summary: Multi-format archive and compression library
   license: BSD-2-Clause
   license_file: COPYING
   license_family: BSD
-
 extra:
   recipe-maintainers:
-  - jakirkham
-  - mingwandroid
-  - ocefpaf
-
+    - jakirkham
+    - mingwandroid
+    - ocefpaf

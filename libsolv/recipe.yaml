@@ -2,23 +2,17 @@ context:
   name: libsolv
   version: 0.7.16
   sha256: ed1753255792e9ae0582a1904c4baba5801036ef3efd559b65027e14ee1ea282
-
 package:
   name: '{{ name|lower }}'
   version: '{{ version }}'
-
 source:
   fn: '{{ name }}-{{ version }}.tar.gz'
   url: https://github.com/openSUSE/libsolv/archive/{{ version }}.tar.gz
   sha256: '{{ sha256 }}'
   patches:
     - sel(win): win_export_and_static_build.patch
-
 build:
   number: 0
-  # run_exports:
-  #   - '{{ pin_subpackage(name, max_pin="x.x") }}'
-
 requirements:
   build:
     - '{{ compiler("c") }}'
@@ -28,24 +22,9 @@ requirements:
     - cmake
   host:
     - zlib-static
-
-# test:
-#   commands:
-#     # - sel(unix): test -f ${PREFIX}/lib/libsolv${SHLIB_EXT}
-#     # - sel(unix): test -f ${PREFIX}/lib/libsolvext${SHLIB_EXT}
-#     # - sel(linux): test -f ${PREFIX}/lib/libsolv.so.1
-#     - sel(unix): test -f ${PREFIX}/include/solv/repo.h
-#     - sel(win): if exist %LIBRARY_INC%\solv\repo.h (exit 0) else (exit 1)
-#     # - sel(win): if exist %LIBRARY_LIB%\solv.lib (exit 0) else (exit 1)
-#     # - sel(win): if exist %LIBRARY_LIB%\solvext.lib (exit 0) else (exit 1)
-#     # - sel(win): if exist %LIBRARY_BIN%\solv.dll (exit 0) else (exit 1)
-#     - sel(win): dumpsolv.exe -h
-#     - sel(unix): dumpsolv -h
-
 features:
   - name: static
     default: false
-
 about:
   home: https://github.com/openSUSE/libsolv
   license: BSD-3-Clause
@@ -54,11 +33,9 @@ about:
   summary: Library for solving packages and reading repositories
   description: libsolv, a free package dependency solver using a satisfiability algorithm.
   dev_url: https://github.com/openSUSE/libsolv
-
 extra:
   recipe-maintainers:
     - SylvainCorlay
     - JohanMabille
     - wolfv
     - davidbrochart
-

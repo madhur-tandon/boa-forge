@@ -1,16 +1,13 @@
 context:
-  version: 0.7.7
-
+  version: 0.7.8
 package:
   name: micromamba
   version: '{{ version }}'
-
 source:
   - url: https://github.com/mamba-org/mamba/archive/{{ version }}.tar.gz
     sha256: b56e772c3351138490a0bd3529adc959afbaa3fc3fd83af5e9d856a8a4f9a797
   - path: CLI11.hpp
     folder: include/mamba/CLI.hpp
-
 build:
   number: 1
   ignore_run_exports:
@@ -18,7 +15,6 @@ build:
     - sel(unix): libarchive
     - sel(linux): libgcc-ng
     - sel(linux): libstdcxx-ng
-
 requirements:
   build:
     - '{{ compiler("c") }}'
@@ -42,16 +38,13 @@ requirements:
     - sel(unix): openssl-static
     - sel(unix): reproc-cpp-static
     - sel(unix): reproc-static
-
-features:
-  - name: static
-    default: false
-
 test:
   commands:
     - sel(unix): test -f $PREFIX/bin/micromamba
     - micromamba --help
-
+features:
+  - name: static
+    default: false
 about:
   home: https://github.com/TheSnakePit/mamba
   license_file:
@@ -73,10 +66,8 @@ about:
   license_family: BSD
   summary: Micromamba is a tiny version of mamba, the fast conda package installer.
   dev_url: https://github.com/TheSnakePit/mamba
-
 extra:
   recipe-maintainers:
     - wolfv
     - SylvainCorlay
     - JohanMabille
-
